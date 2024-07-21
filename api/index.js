@@ -104,7 +104,7 @@ const validateEmail = (email) => {
             }
 
             const mxRecord = addresses[0].exchange;
-            const client = net.createConnection(25, mxRecord);
+            const client = net.createConnection(587, mxRecord); // Use port 587
 
             let isValid = false;
 
@@ -120,6 +120,7 @@ const validateEmail = (email) => {
             });
 
             client.on('end', () => {
+                console.log('Connection ended');
                 resolve(isValid);
             });
 
@@ -129,6 +130,7 @@ const validateEmail = (email) => {
             });
 
             client.on('timeout', () => {
+                console.error('Connection timeout');
                 client.destroy();
                 reject('Connection timeout');
             });
